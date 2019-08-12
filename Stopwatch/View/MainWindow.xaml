@@ -1,0 +1,72 @@
+﻿<Window x:Class="Stopwatch.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Stopwatch"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="300" Width="700">
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="350" />
+            <ColumnDefinition Width="350" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="160"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Column="0" Grid.Row="1">
+            <TextBlock x:Name="currentSplitTime" Text="{Binding Path=CurrentMeasurement}"  HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="48" />
+        </Grid>
+
+        <Grid Grid.Column="0" Grid.Row="2">
+            <StackPanel x:Name="startButtonPanel" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0, 10, 0, 0" Style="{DynamicResource BasicButtonPanelStyle}"
+                        Visibility="{Binding Path=IsReset, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Button x:Name="startButton" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0, 10, 0, 10" Style="{DynamicResource BasicButtonStyle}"
+                        Command="{Binding StartCmd}">
+                    <Image Source="/Resources/Icons/play.png"/>
+                </Button>
+            </StackPanel>
+            
+            <StackPanel x:Name="activeStateButtonPanel" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0, 10, 0, 0" Style="{DynamicResource BasicButtonPanelStyle}"
+                        Visibility="{Binding Path=IsRunning, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Grid Height="70">
+                    <Button x:Name="nextLapButton" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="30,10,0,10" Style="{DynamicResource BasicButtonStyle}"
+                        Command="{Binding StartNewLapCmd}">
+                        <Image Source="/Resources/Icons/lap.png"/>
+                    </Button>
+                    <Button x:Name="pauseButton"  HorizontalAlignment="Right"  VerticalAlignment="Center" Margin="120,10,30,10" Style="{DynamicResource BasicButtonStyle}"
+                        Command="{Binding PauseCmd}">
+                        <Image Source="/Resources/Icons/pause.png"/>
+                    </Button>
+                 </Grid>
+            </StackPanel>
+            
+            <StackPanel x:Name="inactiveStateButtonPanel" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0, 10, 0, 0" Style="{DynamicResource BasicButtonPanelStyle}"
+                        Visibility="{Binding Path=IsOnPause, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Grid Height="70">
+                    <Button x:Name="resetButton" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="30,10,0,10" Style="{DynamicResource BasicButtonStyle}"
+                            Command="{Binding ResetCmd}">
+                        <Image Source="/Resources/Icons/stop.png"/>
+                    </Button>
+                    <Button x:Name="restartLapButton" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="120,10,30,10" Style="{DynamicResource BasicButtonStyle}"
+                            Command="{Binding StartCmd}">
+                        <Image Source="/Resources/Icons/play.png"/>
+                    </Button>
+                </Grid>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <DataGrid ItemsSource="{Binding Path=PreviousLaps}" Margin="0,0,0,-238" ColumnWidth="*" Background="White" BorderBrush="Transparent" />
+        </Grid>
+    </Grid>
+</Window>
